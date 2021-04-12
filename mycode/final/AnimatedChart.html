@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Animated chart</title>
+        <!-- 1. Download V4 version of D3-->
+        <script src = "../../lib/d3.js"></script>
+        <script src = "../../lib/fisheye.js"></script>
+        <script src = "../../lib/jquery.js"></script>
+        <script src = "../../src/gd.js"></script>
+        <script src = "../../lib/paper-full.js "></script>
+        <script src = "../../src/marchingants.js"></script>
+    </head>
+
+    <style>
+        canvas
+        {
+            position:absolute;
+        }
+        circle
+        {
+            fill: #FABF56;
+        }
+        line 
+        {
+            stroke: #aaa;
+        }
+        text 
+        {
+            font-family: "Helvetica Neue", Helvetica, sans-serif;
+            fill: rgb(206, 55, 17);
+        }
+        div
+        {
+            border: 3px solid white;
+        }
+        label 
+        {
+            color: rgb(206, 55, 17);
+            font-family: "Helvetica Neue", Helvetica, sans-serif;
+        }
+    </style>
+
+    <style type="text/css">
+        /* 13. Basic Styling with CSS */
+        
+        /* Style the lines by removing the fill and applying a stroke */
+        .line {
+            fill: none;
+            stroke: #aaa;
+            stroke-width: 3;
+        }
+        
+        .overlay {
+        fill: none;
+        pointer-events: all;
+        }
+        
+        /* Style the dots by assigning a fill and stroke */
+        .dot {
+            fill: #8da0cb;
+            stroke: #fff;
+        }
+        
+        .focus circle {
+            fill: none;
+            stroke: steelblue;
+        }
+        
+    </style>
+
+    <body>
+        <canvas id = "mycanvas" width = "1000" height="600" style="top:30px;left:0px" display="inline">
+        </canvas>
+        <div id ='tablediv' style="background-color:#EDEDED;">
+            <svg id= "coversvg" width="1000" height="600" style="top:30px;left:0px">
+            </svg>
+            <br>
+            <svg id= "tabexpsvg" width="1000" height="100" style="top:30px;left:0px">
+            </svg>
+        </div>
+        <script type="text/javascript" src="GGEdata.js"></script>
+        <script type="text/javascript" src="drawTable.js"></script>
+
+        <script type="text/javascript" src="../../example/boxplot_data.js"></script>
+        <script type="text/javascript" src="../../example/drawboxplot.js"></script>
+        </script>
+
+        <script>
+            var canvas = document.getElementById('mycanvas');
+            paper.setup(canvas);
+            paper.install(window);
+            paper.view.draw();
+            
+            drawGGEChart(ggeData)
+
+            MA_Start()
+            d3.selectAll('rect')
+                .each(function (d, i)
+                {
+                    if (i%2 == 0)   
+                    { 
+                    
+                        var idx = Math.floor(i/2)
+                        var rect = d3.select(this)
+
+                        var rectBox = d3.select(this).node().getBoundingClientRect();
+                        // console.log(rectBox)
+                        var deltaX = 0;
+                        var visual_proxy = [
+                            [rectBox.x + deltaX, rectBox.y + rectBox.height],
+                            [rectBox.x + rectBox.width * 0.5 + deltaX, rectBox.y + rectBox.height - 13],
+                            [rectBox.x + rectBox.width + deltaX, rectBox.y + rectBox.height],
+                            [rectBox.x + rectBox.width + deltaX, rectBox.y + rectBox.height+10],
+                            [rectBox.x + rectBox.width * 0.5 + deltaX, rectBox.y + rectBox.height-3],
+                            [rectBox.x + deltaX, rectBox.y + rectBox.height+10],
+                            [rectBox.x + deltaX, rectBox.y + rectBox.height]]
+                        
+                        // console.log(visual_proxy)
+                        
+                        var path = [
+                        [rectBox.x + rectBox.width * 0.5 , rectBox.y + rectBox.height],
+                        [rectBox.x + rectBox.width * 0.5 , rectBox.y]]
+
+                        var deltaY = 30;
+                        var boundX = 0;
+                        var boundary = [
+                            [rectBox.x, rectBox.y - deltaY], 
+                            [rectBox.x + rectBox.width, rectBox.y - deltaY], 
+                            [rectBox.x + rectBox.width, rectBox.y + rectBox.height - deltaY],
+                            [rectBox.x, rectBox.y + rectBox.height - deltaY],
+                            [rectBox.x, rectBox.y - deltaY]]
+                        
+                        var speed = Math.floor(ggeData[idx].GGEPC*3.5)
+                        // var space = ggeData[i].GGE/ggeData[i].GGEPC 
+                        var population = Math.floor(ggeData[idx].GGE/ggeData[idx].GGEPC)
+                        var space = Math.floor(300/population)
+                        var color = '#F9DEB3' 
+                        // console.log(boundary)
+                        
+                        marchingAnt(visual_proxy, path, boundary, speed, space, color)
+                    }
+                })
+            MA_End();
+
+            //add explanation box for the table 
+            var tabexpsvg = d3.select("#tabexpsvg")
+            tabexpsvg.append('text')
+                    .attr('x', 20)
+                    .attr('y', 30)
+                    .attr('text-anchor', 'begin')
+                    .text('Barchart: The amount of greenhouse gas emission of six countries in 2018')
+                    .style('font-weight', 'bold')
+
+            tabexpsvg.append('text')
+                .attr('x', 20)
+                .attr('y', 50)
+                .attr('text-anchor', 'begin')
+                .text('Ant marching effect: ')
+                .style('font-weight', 'bold')
+
+            tabexpsvg.append('text')
+                .attr('x', 20)
+                .attr('y', 70)
+                .attr('text-anchor', 'begin')
+                .text('The density of the ants represents the population of the countries')
+            
+            tabexpsvg.append('text')
+                .attr('x', 20)
+                .attr('y', 90)
+                .attr('text-anchor', 'begin')
+                .text('The speed of the ants represents the greenhouse gas emission per capital of each country')
+            
+        </script>
+
+
+        <script type="text/javascript" src="k56cadata.js"></script>
+        <script type="text/javascript" src="drawk56network.js"></script>
+        <div id = 'graphdiv' style="background-color:#EDEDED;">
+            
+            <svg id = 'graphsvg' width = '100%' height = '800'>
+                <g class="links"></g>
+                <g class="nodes"></g>
+            </svg>
+            <svg id = 'expsvg' width = '100%' height = '150'>
+
+            </svg>
+            
+        </div>
+
+        <script>
+            drawGraph(nodes, links)
+            explainNetwork()
+        </script>
+    </body>
+</html>
+
