@@ -194,6 +194,40 @@
             drawGraph(nodes, links)
             explainNetwork()
         </script>
+
+        <div id  = 'infodiv' width = '1200' height = '100'>
+            <svg id = 'infosvg' width = '1200' height = '100'>
+            </svg>
+        </div>
+        <script>
+            var svginfo = d3.select("#infosvg")
+            svginfo.append('text')
+                .attr('x', 20)
+                .attr('y', 30)
+                .attr('text-anchor', 'begin')
+                .text('Scientific and Large Data Visualization project 2020')
+                .style('font-weight', 'bold')
+
+            svginfo.append('text')
+                .attr('x', 20)
+                .attr('y', 50)
+                .attr('text-anchor', 'begin')
+                .text('University of Pisa')
+                .style('font-weight', 'bold')
+            
+            svginfo.append('text')
+                .attr('x', 20)
+                .attr('y', 70)
+                .attr('text-anchor', 'begin')
+                .text('Using dynamic effect from https://vizgroup.github.io/activateviz/')
+
+            svginfo.append('text')
+                .attr('x', 20)
+                .attr('y', 90)
+                .attr('text-anchor', 'begin')
+                .text('Giang Pham')
+            
+        </script>
     </body>
 </html>
 
