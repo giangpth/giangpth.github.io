@@ -4,14 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Scientific and Large Data Visualization - University of Pisa</title>
-        <!-- 1. Download V4 version of D3-->
+        <title>Giang Pham Tran Huong</title>
         <script src = "lib/d3.js"></script>
-        <script src = "lib/fisheye.js"></script>
-        <script src = "lib/jquery.js"></script>
-        <script src = "src/gd.js"></script>
-        <script src = "lib/paper-full.js "></script>
-        <script src = "src/marchingants.js"></script>
     </head>
 
     <style>
@@ -30,7 +24,7 @@
         text 
         {
             font-family: "Helvetica Neue", Helvetica, sans-serif;
-            fill: rgb(206, 55, 17);
+            fill: rgb(32, 32, 32);
         }
         div
         {
@@ -72,162 +66,46 @@
     </style>
 
     <body>
-        <canvas id = "mycanvas" width = "1200" height="600" style="top:30px;left:0px" display="inline">
-        </canvas>
-        <div id ='tablediv' >
-            <svg id= "coversvg" width="1200" height="600" style="top:30px;left:0px">
-            </svg>
-            <br>
-            <svg id= "tabexpsvg" width="1200" height="100" style="top:30px;left:0px">
-            </svg>
-        </div>
-        <script type="text/javascript" src="GGEdata.js"></script>
-        <script type="text/javascript" src="drawTable.js"></script>
-
-        <script type="text/javascript" src="example/boxplot_data.js"></script>
-        <script type="text/javascript" src="example/drawboxplot.js"></script>
-        </script>
-
-        <script>
-            var canvas = document.getElementById('mycanvas');
-            paper.setup(canvas);
-            paper.install(window);
-            paper.view.draw();
-            
-            drawGGEChart(ggeData)
-
-            MA_Start()
-            d3.selectAll('rect')
-                .each(function (d, i)
-                {
-                    if (i%2 == 0)   
-                    { 
-                    
-                        var idx = Math.floor(i/2)
-                        var rect = d3.select(this)
-
-                        var rectBox = d3.select(this).node().getBoundingClientRect();
-                        // console.log(rectBox)
-                        var deltaX = 0;
-                        var visual_proxy = [
-                            [rectBox.x + deltaX, rectBox.y + rectBox.height],
-                            [rectBox.x + rectBox.width * 0.5 + deltaX, rectBox.y + rectBox.height - 13],
-                            [rectBox.x + rectBox.width + deltaX, rectBox.y + rectBox.height],
-                            [rectBox.x + rectBox.width + deltaX, rectBox.y + rectBox.height+10],
-                            [rectBox.x + rectBox.width * 0.5 + deltaX, rectBox.y + rectBox.height-3],
-                            [rectBox.x + deltaX, rectBox.y + rectBox.height+10],
-                            [rectBox.x + deltaX, rectBox.y + rectBox.height]]
-                        
-                        // console.log(visual_proxy)
-                        
-                        var path = [
-                        [rectBox.x + rectBox.width * 0.5 , rectBox.y + rectBox.height],
-                        [rectBox.x + rectBox.width * 0.5 , rectBox.y]]
-
-                        var deltaY = 30;
-                        var boundX = 0;
-                        var boundary = [
-                            [rectBox.x, rectBox.y - deltaY], 
-                            [rectBox.x + rectBox.width, rectBox.y - deltaY], 
-                            [rectBox.x + rectBox.width, rectBox.y + rectBox.height - deltaY],
-                            [rectBox.x, rectBox.y + rectBox.height - deltaY],
-                            [rectBox.x, rectBox.y - deltaY]]
-                        
-                        var speed = Math.floor(ggeData[idx].GGEPC*3.5)
-                        // var space = ggeData[i].GGE/ggeData[i].GGEPC 
-                        var population = Math.floor(ggeData[idx].GGE/ggeData[idx].GGEPC)
-                        var space = Math.floor(300/population)
-                        var color = '#F9DEB3' 
-                        // console.log(boundary)
-                        
-                        marchingAnt(visual_proxy, path, boundary, speed, space, color)
-                    }
-                })
-            MA_End();
-
-            //add explanation box for the table 
-            var tabexpsvg = d3.select("#tabexpsvg")
-            tabexpsvg.append('text')
-                    .attr('x', 20)
-                    .attr('y', 30)
-                    .attr('text-anchor', 'begin')
-                    .text('Barchart: The amount of greenhouse gas emission of six countries in 2018')
-                    .style('font-weight', 'bold')
-
-            tabexpsvg.append('text')
-                .attr('x', 20)
-                .attr('y', 50)
-                .attr('text-anchor', 'begin')
-                .text('Ant marching effect: ')
-                .style('font-weight', 'bold')
-
-            tabexpsvg.append('text')
-                .attr('x', 20)
-                .attr('y', 70)
-                .attr('text-anchor', 'begin')
-                .text('The density of the ants represents the population of the countries')
-            
-            tabexpsvg.append('text')
-                .attr('x', 20)
-                .attr('y', 90)
-                .attr('text-anchor', 'begin')
-                .text('The speed of the ants represents the greenhouse gas emission per capital of each country')
-            
-        </script>
-
-
-        <script type="text/javascript" src="k56cadata.js"></script>
-        <script type="text/javascript" src="drawk56network.js"></script>
-        <div id = 'graphdiv' >
-            
-            <svg id = 'graphsvg' width = '1200' height = '800'>
-                <g class="links"></g>
-                <g class="nodes"></g>
-            </svg>
-            <svg id = 'expsvg' width = '1200' height = '150'>
-
-            </svg>
-            
-        </div>
-
-        <script>
-            drawGraph(nodes, links)
-            explainNetwork()
-        </script>
-
-        <div id  = 'infodiv' width = '1200' height = '100'>
-            <svg id = 'infosvg' width = '1200' height = '100'>
+        <div id ='introdiv' >
+            <svg id= "introsvg" width="100%" height="600">
             </svg>
         </div>
         <script>
-            var svginfo = d3.select("#infosvg")
-            svginfo.append('text')
+            var svgintro = d3.select("#introsvg")
+            svgintro.append('text')
                 .attr('x', 20)
                 .attr('y', 30)
                 .attr('text-anchor', 'begin')
-                .text('Scientific and Large Data Visualization project 2020')
+                .text('Hello, you reach Giang Pham!')
                 .style('font-weight', 'bold')
 
-            svginfo.append('text')
+            svgintro.append('text')
                 .attr('x', 20)
                 .attr('y', 50)
                 .attr('text-anchor', 'begin')
-                .text('University of Pisa')
-                .style('font-weight', 'bold')
+                .text('In 2015, I got my bachelor degree in Computer Science from University of Engineering and Technology, Vietnam National University, Hanoi')
             
-            svginfo.append('text')
+            svgintro.append('text')
                 .attr('x', 20)
                 .attr('y', 70)
                 .attr('text-anchor', 'begin')
-                .text('Using dynamic effect from https://vizgroup.github.io/activateviz/')
+                .text('Then I worked as a software engineer in Viettel Research and Development Institute from 2015 to 2019')
 
-            svginfo.append('text')
+            svgintro.append('text')
                 .attr('x', 20)
                 .attr('y', 90)
                 .attr('text-anchor', 'begin')
-                .text('Giang Pham')
+                .text('In 2019, I started my master degree in Computer Science at University of Pisa')
+            
+            svgintro.append('text')
+                .attr('x', 20)
+                .attr('y', 110)
+                .attr('text-anchor', 'begin')
+                .text('You can find some of my work here in this github account, most of them are the projects I have done for my master degree. Have fun!')
             
         </script>
+
+        
     </body>
 </html>
 
