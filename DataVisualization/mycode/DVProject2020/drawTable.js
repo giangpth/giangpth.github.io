@@ -34,7 +34,7 @@ function drawGGEChart(ggeData)
     .attr("text-anchor", "begin")
     .attr("x", width/2 - margin*2)
     .attr("y", 30)
-    .style("font-size", "30px")
+    .style("font-size", "24px")
     .text("Greenhouse gas emission in 2018")
     .style('font-weight', 'bold')
 

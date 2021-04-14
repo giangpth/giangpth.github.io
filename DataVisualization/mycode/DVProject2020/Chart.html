@@ -72,19 +72,48 @@
     </style>
 
     <body>
-        <canvas id = "mycanvas" width = "1200" height="600" style="top:30px;left:0px" display="inline">
+        <canvas id = "mycanvas" width = "1200" height="800" style="top:30px;left:0px" display="inline">
         </canvas>
         <div id ='tablediv' >
+            <svg id= "infosvg" width="1200" height="120" style="top:30px;left:0px">
+            </svg>
             <svg id= "coversvg" width="1200" height="600" style="top:30px;left:0px">
             </svg>
             <br>
-            <svg id= "tabexpsvg" width="1200" height="100" style="top:30px;left:0px">
+            <svg id= "tabexpsvg" width="1200" height="120" style="top:30px;left:0px">
             </svg>
         </div>
         <script type="text/javascript" src="GGEdata.js"></script>
         <script type="text/javascript" src="drawTable.js"></script>
 
         </script>
+        <script>
+            var svginfo = d3.select("#infosvg")
+            svginfo.append('text')
+                .attr('x', 600)
+                .attr('y', 30)
+                .attr('text-anchor', 'middle')
+                .text('Scientific and Large Data Visualization project 2020')
+                .attr('font-size', '30')
+                .style('font-weight', 'bold')
+
+
+            svginfo.append('text')
+                .attr('x', 600)
+                .attr('y', 70)
+                .attr('text-anchor', 'middle')
+                .text('University of Pisa')
+                .attr('font-size', '30')
+                .style('font-weight', 'bold')
+            
+
+            svginfo.append('text')
+                .attr('x', 600)
+                .attr('y', 100)
+                .attr('text-anchor', 'middle')
+                .text('Giang Pham')
+            
+        </script> 
 
         <script>
             var canvas = document.getElementById('mycanvas');
@@ -131,6 +160,7 @@
                             [rectBox.x, rectBox.y + rectBox.height - deltaY],
                             [rectBox.x, rectBox.y - deltaY]]
                         
+                        
                         var speed = Math.floor(ggeData[idx].GGEPC*3.5)
                         // var space = ggeData[i].GGE/ggeData[i].GGEPC 
                         var population = Math.floor(ggeData[idx].GGE/ggeData[idx].GGEPC)
@@ -171,6 +201,12 @@
                 .attr('text-anchor', 'begin')
                 .text('The speed of the ants represents the greenhouse gas emission per capital of each country')
             
+            tabexpsvg.append('text')
+                .attr('x', 20)
+                .attr('y', 110)
+                .attr('text-anchor', 'begin')
+                .text('Using dynamic effect from https://vizgroup.github.io/activateviz/')
+            
         </script>
 
 
@@ -182,7 +218,7 @@
                 <g class="links"></g>
                 <g class="nodes"></g>
             </svg>
-            <svg id = 'expsvg' width = '1200' height = '150'>
+            <svg id = 'expsvg' width = '1200' height = '160'>
 
             </svg>
             
@@ -193,39 +229,6 @@
             explainNetwork()
         </script>
 
-        <div id  = 'infodiv' width = '1200' height = '100'>
-            <svg id = 'infosvg' width = '1200' height = '100'>
-            </svg>
-        </div>
-        <script>
-            var svginfo = d3.select("#infosvg")
-            svginfo.append('text')
-                .attr('x', 20)
-                .attr('y', 30)
-                .attr('text-anchor', 'begin')
-                .text('Scientific and Large Data Visualization project 2020')
-                .style('font-weight', 'bold')
-
-            svginfo.append('text')
-                .attr('x', 20)
-                .attr('y', 50)
-                .attr('text-anchor', 'begin')
-                .text('University of Pisa')
-                .style('font-weight', 'bold')
-            
-            svginfo.append('text')
-                .attr('x', 20)
-                .attr('y', 70)
-                .attr('text-anchor', 'begin')
-                .text('Using dynamic effect from https://vizgroup.github.io/activateviz/')
-
-            svginfo.append('text')
-                .attr('x', 20)
-                .attr('y', 90)
-                .attr('text-anchor', 'begin')
-                .text('Giang Pham')
-            
-        </script>
     </body>
 </html>
 
