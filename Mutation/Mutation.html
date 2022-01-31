@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Compute protein mutation - University of Pisa</title>
+    </head>
+
+
+    <body style="background-color: #EDEDED;">
+        <div id = 'introdiv' style='background-color: #EDEDED;'>
+            <h1>
+                Compute protein mutation
+            </h1>
+            <p>
+                Giang Pham - University of Pisa
+            </p>
+        </div>
+        <div id = 'maindiv' style='background-color:#EDEDED'>
+            <form id="form">
+                <label for="seq">Enter the sequence inside the box below:</label><br>
+                <input type="text" id="seq" name="seq" value="" required size=100><br>
+                <label for="mut">Enter the list of mutations below, separated by ',':</label><br>
+                <label for="mut">For example: 'k3b, t67v, _78t, h98_' means:</label><br>
+                <label for="mut">&emsp; - K at position 3 changes to B</label><br>
+                <label for="mut">&emsp; - T at position 67 changes to V</label><br>
+                <label for="mut">&emsp; - Add T at position 78</label><br>
+                <label for="mut">&emsp; - H at position 98 is deleted</label><br>
+                <input type="text" id="mut" name="mut" value="" required size=100><br>
+                <button type="submit">Submit</button><br>
+            </form>
+            
+            <p>Log</p>
+            <textarea id='log' cols=87 rows=7 readonly></textarea>
+            <p>Result:</p>
+            <textarea id='res' cols=87 rows=1 readonly></textarea>
+
+            <script type="text/javascript">
+                function processForm(e) 
+                {
+                    if (e.preventDefault) e.preventDefault();
+
+                    var seq = document.getElementById('seq').value
+                    var mut = document.getElementById('mut').value
+
+                    var log = document.getElementById('log')
+                    var res = document.getElementById('res')
+                    
+                    changes = mut.split(",")
+
+                    console.log('Submit form')
+
+                    var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+                    if(format.test(seq))
+                    {
+                        document.getElementById('log').value = "The input sequence contains invalid character(s)\nTry again";
+                        console.log("The input sequence contains invalid character(s)")
+                        document.getElementById('seq').value='';
+                        return false;
+                    }
+                    else
+                    {
+                        document.getElementById('log').value = "The input sequence contains: " + String(seq.length) + " animo acids \n";
+                    }
+
+                    var list_changes = []
+                    for (var i = 0; i < changes.length; i++)
+                    {
+                        console.log(changes[i])
+                        var change = changes[i].trim() 
+                        src = change[0]
+                        des = change[change.length-1]
+                        pos = change.match(/\d+/)
+
+                        //check if the change is valid
+                        if ((/[a-zA-Z_]/).test(src) && (/[a-zA-Z_]/).test(des) && pos !== null)
+                        {
+                            console.log('Source, des, pos are correct')
+                            if (src !== '_' && pos[0] > seq.length)
+                            {
+                                document.getElementById('log').value += "The position " + String(pos[0]) + 
+                                " is larger than the length of the sequence\nTry again";
+                                document.getElementById('mut').value = ''
+                                return false;
+                            }
+                            else if (src == '_' && pos[0] > seq.length+1)
+                            {
+                                document.getElementById('log').value += "The position " + String(pos[0]) + 
+                                " is larger than the length of the sequence\nTry again";
+                                document.getElementById('mut').value = ''
+                                return false;
+                            }
+                            if (pos[0] <= 0)
+                            {
+                                document.getElementById('log').value += "The position " + String(pos[0]) + 
+                                " is smaller than 1\nTry again";
+                                document.getElementById('mut').value = ''
+                                return false;
+                            }
+                            var dict = {src: src, des:des, pos:pos[0]}
+                            list_changes.push(dict)
+                            console.log(list_changes[i].src, list_changes[i].des, list_changes[i].pos[0])
+                        }
+                        else
+                        {
+                            console.log('Source or destination or position is invalid', change)
+                            document.getElementById('log').value = "The input mutations are incorrect\nTry again";
+                            document.getElementById('mut').value='';
+                            return false;
+                        }   
+                    }
+
+                    document.getElementById('log').value += "Received " + String(list_changes.length) + " valid mutations\n";
+                    // document.getElementById('log').rows +=1
+
+                    list_changes.sort(function(first, second)
+                    {
+                        return second.pos - first.pos
+                    });
+                    console.log(list_changes)
+                    // You must return false to prevent the default form behavior
+
+                    for (var i = 0; i < list_changes.length; i++)
+                    {
+                        var change = list_changes[i]
+
+                        if (change.src == '_') // case of insert one animo acid to the sequence 
+                        {
+                            console.log("Add amino acid ", change.des ," to the position ", change.pos)
+                            var newseq = seq.slice(0, change.pos-1) + change.des + seq.slice(change.pos-1, seq.length)
+                            seq = newseq
+                            console.log(seq)
+                        }
+                        else
+                        {
+                            if (seq[change.pos - 1] !== change.src)
+                            {
+                                console.log("The amino acid ", seq[change.pos - 1], " at position ", change.pos, 
+                                ' is different from ', change.src)
+                                document.getElementById('log').value += "The amino acid " + seq[change.pos - 1] + " at position " + 
+                                String(change.pos) + ' is different from ' + change.src + "\nTry again";
+                                return false;
+                            }
+                            var des = ''
+                            if (change.des !=='_')
+                            {
+                                des = change.des
+                            }
+                            console.log("Change amino acid ", change.src," at the position ", change.pos, " to ", des)
+                            var newseq = seq.slice(0, change.pos-1) + des + seq.slice(change.pos, seq.length)
+                            seq = newseq;
+                            console.log(seq);
+                        }
+                    }
+                    document.getElementById('res').value=seq
+                    document.getElementById('log').value += "The result sequence has " + String(seq.length) + " amino acids\n";
+                    return false;
+                }
+
+                var form = document.getElementById('form');
+                if (form.attachEvent) 
+                {
+                    form.attachEvent("submit", processForm);
+                } else 
+                {
+                    form.addEventListener("submit", processForm);
+                }
+            </script>
+        </div>
+        
+
+    </body>
+</html>
+
