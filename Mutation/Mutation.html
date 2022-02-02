@@ -85,6 +85,7 @@
                                 document.getElementById('log').value += "The position " + String(pos[0]) + 
                                 " is larger than the length of the sequence\nTry again";
                                 document.getElementById('mut').value = ''
+                                document.getElementById('res').value=''
                                 return false;
                             }
                             else if (src == '_' && pos[0] > seq.length+1)
@@ -92,6 +93,7 @@
                                 document.getElementById('log').value += "The position " + String(pos[0]) + 
                                 " is larger than the length of the sequence\nTry again";
                                 document.getElementById('mut').value = ''
+                                document.getElementById('res').value=''
                                 return false;
                             }
                             if (pos[0] <= 0)
@@ -99,6 +101,7 @@
                                 document.getElementById('log').value += "The position " + String(pos[0]) + 
                                 " is smaller than 1\nTry again";
                                 document.getElementById('mut').value = ''
+                                document.getElementById('res').value=''
                                 return false;
                             }
                             var dict = {src: src, des:des, pos:pos[0]}
@@ -110,6 +113,7 @@
                             console.log('Source or destination or position is invalid', change)
                             document.getElementById('log').value = "The input mutations are incorrect\nTry again";
                             document.getElementById('mut').value='';
+                            document.getElementById('res').value=''
                             return false;
                         }   
                     }
@@ -157,7 +161,9 @@
                         }
                     }
                     document.getElementById('res').value=seq
+                    document.getElementById('mut').value=''
                     document.getElementById('log').value += "The result sequence has " + String(seq.length) + " amino acids\n";
+                    document.getElementById('log').value += "With the mutation: " + mut + '\n';
                     return false;
                 }
 
