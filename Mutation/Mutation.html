@@ -22,11 +22,13 @@
                 <label for="seq">Enter the sequence inside the box below:</label><br>
                 <input type="text" id="seq" name="seq" value="" required size=100><br>
                 <label for="mut">Enter the list of mutations below, separated by ',':</label><br>
-                <label for="mut">For example: 'K3B, T67V, _78T, H98_' means:</label><br>
+                <label for="mut">For example: 'K3B, THN67VB, _78T, H98_, L126*, *125HKA' means:</label><br>
                 <label for="mut">&emsp; - K at position 3 changes to B</label><br>
-                <label for="mut">&emsp; - T at position 67 changes to V</label><br>
+                <label for="mut">&emsp; - THN at position 67 changes to VB</label><br>
                 <label for="mut">&emsp; - Add T at position 78</label><br>
                 <label for="mut">&emsp; - H at position 98 is deleted</label><br>
+                <label for="mut">&emsp; - L at position 126 is changed to stop codon (*), so the sequence will stop there</label><br>
+                <label for="mut">&emsp; - Stop codon (*) at position 125 is changed to HKA</label><br>
                 <input type="text" id="mut" name="mut" value="" required size=100><br>
                 <button type="submit">Submit</button><br>
             </form>
@@ -54,8 +56,9 @@
 
                     console.log('Submit form')
 
-                    var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-                    if(format.test(seq))
+                    // var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~0-9]/; 
+                    //check to make sure the input sequence contain only letter 
+                    if(! /^[a-zA-Z_*]+$/.test(seq))
                     {
                         document.getElementById('log').value = "The input sequence contains invalid character(s)\nTry again";
                         console.log("The input sequence contains invalid character(s)")
@@ -71,17 +74,31 @@
                     for (var i = 0; i < changes.length; i++)
                     {
                         console.log(changes[i])
-                        var change = changes[i].trim() 
-                        src = change[0]
-                        des = change[change.length-1]
-                        pos = change.match(/\d+/)
+                        var change = changes[i].trim() // eliminate blankspace before and after the mutation 
+
+                        pos = change.match(/\d+/) 
+                        if (pos == null)
+                        {
+                            document.getElementById('log').value += "There is no valid position in the mutation " + String(change) +"\nTry again";
+                            document.getElementById('mut').value = ''
+                            document.getElementById('res').value=''
+                            return false;
+                        }
+
+                        src = change.substring(0, change.indexOf(pos[0]));
+
+                        des = change.replace(src + String(pos[0]), '')
+
+                        console.log(src, pos[0], des)
 
                         //check if the change is valid
-                        if ((/[a-zA-Z_]/).test(src) && (/[a-zA-Z_]/).test(des) && pos !== null)
+                        if (/^[a-zA-Z_*]+$/.test(src) && /^[a-zA-Z_*]+$/.test(des) && pos !== null)
                         {
                             console.log('Source, des, pos are correct')
-                            if (src !== '_' && pos[0] > seq.length)
+                            console.log('Check if position is correct')
+                            if (src !== '_' && src !== '*' && pos[0] > seq.length)
                             {
+                                console.log("Case 1")
                                 document.getElementById('log').value += "The position " + String(pos[0]) + 
                                 " is larger than the length of the sequence\nTry again";
                                 document.getElementById('mut').value = ''
@@ -90,14 +107,25 @@
                             }
                             else if (src == '_' && pos[0] > seq.length+1)
                             {
+                                console.log('Case 2')
                                 document.getElementById('log').value += "The position " + String(pos[0]) + 
                                 " is larger than the length of the sequence\nTry again";
                                 document.getElementById('mut').value = ''
                                 document.getElementById('res').value=''
                                 return false;
                             }
+                            else if (src == '*' && pos[0] != seq.length+1) // stop codon only appear at the end of the sequence 
+                            {
+                                console.log('Case 3')
+                                document.getElementById('log').value += "The position " + String(pos[0]) + 
+                                " of the stop codon is incorrect\nTry again";
+                                document.getElementById('mut').value = ''
+                                document.getElementById('res').value=''
+                                return false;
+                            }
                             if (pos[0] <= 0)
                             {
+                                console.log('Case 4')
                                 document.getElementById('log').value += "The position " + String(pos[0]) + 
                                 " is smaller than 1\nTry again";
                                 document.getElementById('mut').value = ''
@@ -106,12 +134,12 @@
                             }
                             var dict = {src: src, des:des, pos:pos[0]}
                             list_changes.push(dict)
-                            console.log(list_changes[i].src, list_changes[i].des, list_changes[i].pos[0])
+                            console.log(list_changes[i].src, list_changes[i].des, list_changes[i].pos)
                         }
                         else
                         {
                             console.log('Source or destination or position is invalid', change)
-                            document.getElementById('log').value = "The input mutations are incorrect\nTry again";
+                            document.getElementById('log').value = "The input mutations " + String(change) + " are incorrect\nTry again";
                             document.getElementById('mut').value='';
                             document.getElementById('res').value=''
                             return false;
@@ -139,23 +167,42 @@
                             seq = newseq
                             console.log(seq)
                         }
+                        else if (change.src == '*') //case of change stop codon to an amino acid (only happen at the end of the sequence)
+                        {
+                            console.log("Expand the sequence with " + des)
+                            var newseq = seq + des
+                            seq = newseq
+                            console.log(seq)
+                        }
                         else
                         {
-                            if (seq[change.pos - 1] !== change.src)
+                            //check if the source of the mutation is match
+                            if (seq.slice(change.pos - 1, change.pos - 1 + change.src.length) !== change.src)
                             {
-                                console.log("The amino acid ", seq[change.pos - 1], " at position ", change.pos, 
-                                ' is different from ', change.src)
-                                document.getElementById('log').value += "The amino acid " + seq[change.pos - 1] + " at position " + 
-                                String(change.pos) + ' is different from ' + change.src + "\nTry again";
+                                console.log("The amino acid(s) ", seq.slice(change.pos - 1, change.pos - 1 + change.src.length), 
+                                " at position ", change.pos, 
+                                ' is (are) different from ', change.src)
+
+                                document.getElementById('log').value += "The amino acid(s) " + 
+                                seq.slice(change.pos - 1, change.pos - 1 + change.src.length ) + " at position " + 
+                                String(change.pos) + ' is (are) different from ' + change.src + "\nTry again";
                                 return false;
                             }
                             var des = ''
-                            if (change.des !=='_')
+                            if (change.des !=='_' && change.des !== '*')
                             {
                                 des = change.des
                             }
-                            console.log("Change amino acid ", change.src," at the position ", change.pos, " to ", des)
-                            var newseq = seq.slice(0, change.pos-1) + des + seq.slice(change.pos, seq.length)
+                            console.log("Change amino acid(s) ", change.src," at the position ", change.pos, " to ", des)
+
+                            if (change.des == '*')
+                            {
+                                var newseq = seq.slice(0, change.pos-1);
+                            }
+                            else
+                            {
+                                var newseq = seq.slice(0, change.pos-1) + des + seq.slice(change.pos-1+change.src.length, seq.length)
+                            }
                             seq = newseq;
                             console.log(seq);
                         }
