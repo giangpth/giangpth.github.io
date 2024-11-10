@@ -1,141 +1,186 @@
 <!DOCTYPE html>
-<html lang = "en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Giang Pham Tran Huong</title>
-        <script src="DataVisualization/lib/d3.js"></script>
-    </head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giang Pham | PhD Student in Computer Science</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #f9f9f9, #e6f2ff);
+    }
+    header, section, footer {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    header {
+      text-align: center;
+      padding-top: 50px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    h1 {
+      font-size: 2.5em;
+      color: #0066cc;
+      font-weight: bold;
+    }
+    .profile-image {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin-top: 10px;
+      border: 3px solid #0066cc;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      color: #444;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 5px;
+      font-weight: 600;
+    }
+    nav {
+      margin-top: 10px;
+    }
+    nav a {
+      margin: 10px 10px;
+      padding: 8px 12px;
+      text-decoration: none;
+      color: #0066cc;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    nav a:hover {
+      background-color: #e0f0ff;
+    }
+    section {
+      padding: 20px 20px;
+      line-height: 1.6;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    ul li {
+      background-color: #f1f9ff;
+      margin: 10px 10px;
+      padding: 15px;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    a.download-btn, a.email-link, a.link {
+      display: inline-block;
+      padding: 5px 5px;
+      margin-top: 5px;
+      color: white;
+      background-color: #0066cc;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    a.download-btn:hover, a.email-link:hover, a.link:hover {
+      background-color: #004c99;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.9em;
+      color: #777;
+      padding: 20px;
+      border-top: 1px solid #eee;
+    }
+    footer p {
+      margin: 5px 5px;
+    }
+  </style>
+</head>
+<body>
 
-    <style>
-        canvas
-        {
-            position:absolute;
-        }
-        circle
-        {
-            fill: #FABF56;
-        }
-        line 
-        {
-            stroke: #aaa;
-        }
-        text 
-        {
-            font-family: "Helvetica Neue", Helvetica, sans-serif;
-            fill: rgb(32, 32, 32);
-        }
-        div
-        {
-            border: 3px solid white;
-        }
-        label 
-        {
-            color: rgb(206, 55, 17);
-            font-family: "Helvetica Neue", Helvetica, sans-serif;
-        }
-    </style>
+<header>
+  <h1>Giang Pham</h1>
+  <img src="pic.jpg" alt="Giang Pham's Profile Picture" class="profile-image">
+  <p>PhD Student in Computer Science, Cycle 38, University of Pisa</p>
+  <nav>
+    <a href="#about">About Me</a>
+    <a href="#research">Research</a>
+    <a href="#publications">Publications</a>
+    <a href="#cv">CV</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
 
-    <style type="text/css">
-        /* 13. Basic Styling with CSS */
-        
-        /* Style the lines by removing the fill and applying a stroke */
-        .line {
-            fill: none;
-            stroke: #aaa;
-            stroke-width: 3;
-        }
-        
-        .overlay {
-        fill: none;
-        pointer-events: all;
-        }
-        
-        /* Style the dots by assigning a fill and stroke */
-        .dot {
-            fill: #8da0cb;
-            stroke: #fff;
-        }
-        
-        .focus circle {
-            fill: none;
-            stroke: steelblue;
-        }
-        
-    </style>
+<section id="about">
+  <h2>About Me</h2>
+  <p>Welcome! I'm Giang Pham, a PhD student in computer science specializing in Computational Biology. 
+    My research focuses on modeling and analyzing biological systems, 
+    with a current emphasis on assessing gene importance within Boolean networks.</p>
+</section>
 
-    <body>
-        <div id ='introdiv' style="background-color:#EDEDED;">
+<section id="research">
+  <h2>Research</h2>
+  <p>My current research explores the application of Shapley values to analyze Boolean networks. 
+    This work aims to measure the importance of internal nodes within these networks relative to a target node, 
+    across diverse environmental conditions represented by different sets of input factors.</p>
+</section>
+
+<section id="publications">
+  <h2>Publications</h2>
+  <ul>
+    <li><strong>Gene importance assessment based on shapley value for boolean networks: 
+        Validation and scalability analysis</strong>
+         - In proc. of 12th Int. Symposium “From Data to Models and back (DataMod 2024)”, 
+        Lecture Notes in Computer Science, Springer, in press.
+        <em>Boolean networks offer a powerful framework for modeling gene interactions, 
+            providing valuable insights into cellular behavior and disease mechanisms. 
+            Identifying key genes is critical for advancing scientific understanding and drug development, 
+            but the complexity of biological networks often requires extensive simulations that are difficult to interpret.
+
+            This paper investigates a novel approach for evaluating gene importance within Boolean networks, 
+            using Shapley values from cooperative game theory. 
+            The method quantifies each gene's contribution to overall network behavior, yielding a metric for gene importance.
             
-            <h1>
-                Hello, you reach Giang Pham!
-            </h1>
-            <h2>
-                Here you can find my informal and unnecessarily long profile.
-            </h2>
-            <h3>
-                A glance about my "Career Path". <br>
-            </h3>
-            <p>
-                I was born in 1993 in Bac Ninh - a small town in the north of Vietnam. <br>
-                In 2011, I started to study Computer Science at 
-                <a href="https://e.uet.vnu.edu.vn/">University of Engineering and Technology - 
-                    Vietnam National University, Hanoi</a>.<br>
-                I got my bachelor degree in September 2015. <br>
-                After that I worked as software engineer at 
-                Viettel Research and Development Institute from 2015 to 2019. <br>
-                This company has renamed to 
-                Viettel High Technology Industries Coporation (VHT). 
-                You can find more information about this company 
-                <a href="http://viettelrd.com.vn/en/">here</a>.<br>
-                In 2019, I moved to Pisa, Italy to start my master degree in Computer Science at 
-                <a href="http://unipi.it">University of Pisa</a>.<br>
-            </p>
-            <br>
-            <h3>
-                And some contact information and social network.
-            </h3>
-            <p>
-                My email address: giangphamtranhuong@gmail.com <br>
-                My skype ID: giangphamtranhuong <br>
-                You can also find me on Facebook but I only post some stupid things there.
-                If you are interested you can reach me at 
-                <a href="https://www.facebook.com/anyavailablename/"> my Facebook account</a>.<br>
-                In case you are looking for something more serious, you can take a look at 
-                <a href="https://github.com/giangpth"> my Github</a>. 
-                You can find some of my work in this Github account,
-                most of them are the projects I have done for my master degree. <br>
-                And, one of my most favorite way to kill spare time is reading, 
-                so I also maintain an active 
-                <a href="https://www.goodreads.com/user/show/60528712-pham-giang"> Goodreads account</a>.<br>
-            </p>
-            <br>
-            <h3>
-                Some of my skills (professonal skills, language skills, soft skills or even non-sense skills...)
-            </h3>
-            <p>
-                I got my IELTS certificate in May 2017 with overall of 6.5. 
-                In detail: Reading: 8.0; Speaking: 5.5; Writing 7.0; Listening: 6.0. <br>
-                I am very familiar with C++ and it is also my most favorite programming language. 
-                The reason is that I have controlling issue and C++ gives me a great power to control many things. <br>
-                Besides, I can also deal well with Python especially with Jupyter Notebook. <br>
-                And, you can see I made this page myself so I am also fine with javascript and html at the beginning level. 
-                In need, I can spend time to learn more about them. <br>
-                I had long term experience with Linux (Ubuntu) before transfering to MacOS (because I bought my stupid Macbook. 
-                Don't get me wrong, I like Macbook and Apple's stuffs a lot, that is the reason I bought them). <br>
-                At least, don't get panic attack when I have to speak in front of many people. 
-                I think it is also worthy to consider as a skill. That is the reason I put it here. <br>
-                I can do teamwork but it is not my favorite way of working. I am more productive when I can work alone, on my own.
-                But teamwork is not a huge problem for me as long as I am not the leader and all the tasks are well defined. <br>
+            We demonstrate the method’s effectiveness using a case study on the CD4+ T cell differentiation model, 
+            validating our predictions against established literature. 
+            Additionally, we compare this approach with traditional network analysis metrics to highlight its advantages. 
+            We further evaluate the method’s scalability across six models of different sizes, 
+            concluding that it is particularly well-suited for small to medium-scale networks. 
+            Lastly, we explore potential improvements through the application of network propagation techniques.</em>
+    </li>
 
+    <li><strong>Preliminary results on Shapley value notions and propagation methods for boolean networks</strong>
+         - In proc. of 11th Int. Symposium “From Data to Models and back (DataMod 2023)”,
+        Lecture Notes in Computer Science, Springer, in press.
+        <em>The Shapley value is a concept in coalition game theory, with applications extending across various fields, including computational biology. 
+            In this domain, the Shapley value is primarily used to assess the importance of nodes within biological networks. 
+            In this study, we tackle the problem of evaluating the significance of nodes in gene regulatory networks modeled as Boolean networks. 
+            We introduce two game settings for Boolean networks, along with three different notions of the Shapley value. 
+            Furthermore, we present preliminary results on a propagation method that enables the Shapley value to be 
+            extended from one set of nodes to others within the network.</em>
+    </li>
+  </ul>
+</section>
 
-            </p>
-        </div>
-       
-            
-        
-        
-    </body>
+<section id="cv">
+  <h2>CV</h2>
+  <a href="CV.pdf" download class="download-btn">Download my CV</a>
+</section>
+
+<section id="contact">
+  <h2>Contact</h2>
+  <p>Email: <a href="mailto:tranhuong.giangpham@phd.unipi.it" class="email-link">tranhuong.giangpham@phd.unipi.it</a> 
+    or <a href="mailto:giangphamtranhuong@gmail.com" class="email-link">giangphamtranhuong@gmail.com</a></p>
+  <p>LinkedIn: <a href="https://www.linkedin.com/in/giangphamtranhuong/" class="link">LinkedIn Profile</a></p>
+  <p>Github: <a href="https://github.com/giangpth" class="link">Github</a></p>
+</section>
+
+<footer>
+  <p>&copy; 2024 Giang Pham. All rights reserved.</p>
+</footer>
+
+</body>
 </html>
-
